@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Interpreter</title>
+    <link rel="stylesheet" href="Design.css"/>
+</head>
+<body>
+  <div class="rounded-rectangle">
+    <h1>PDF Interpreter</h1>
+  <div class="rounded-rectangle2">
+</div>
+    <img src="https://lh3.googleusercontent.com/-9ZLfsQd21PwX4IMelk_7ncp5kFj53et2imOK8z_qB0VdKsCMmtsZfyZ-uyu0P2_NbhZ3Vst-xZ1NgI9tdqRz1mNJqAupsbZRvD0m1VrPWlCWqMcIz5eKYCPsFl6CGaRqxf2qDGp0g=w2400"</img>
+  <div1>The PDF Interpreter is an Open-Ai based program that filters through a PDF to interpret and answer any questions based on the PDF data. Upload a PDF for the interpreter and enter the item(s) you wish to interpret or search for in the search bar.</div1>
+    <div2><form method="POST">
+        <input type="text" name="item" placeholder="Enter an item">
+        <input type="submit" value="Add" name="submit_item">
+      </form></div2>
+    <ul>
+        {% for item in queries %}
+        <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+    <div3><form method="POST">
+        <input type="file" name="pdf" id="pdf-input" accept=".pdf" placeholder="Enter an item">
+    </form>
+    <div4><script>
+        var fileInput = document.getElementById('pdf-input');
+        var fileLabel = document.getElementById('pdf-label');
+
+        fileInput.addEventListener('change', function() {
+            if (fileInput.files.length > 0) {
+                fileLabel.textContent = fileInput.files[0].name;
+            } else {
+                fileLabel.textContent = 'No file chosen';
+            }
+
+            var form = document.querySelector('form');
+            var formData = new FormData(form);
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            }).then(function(response) {
+                if (response.ok) {
+                    console.log('PDF file uploaded successfully!');
+                } else {
+                    console.error('Error uploading PDF file.');
+                }
+            }).catch(function(error) {
+                console.error('Error uploading PDF file:', error);
+            });
+        });
+      </script>
+    <!-- ideally more space here-->
+    <form action="/submit", method="get">
+        <input type="submit" vlaue="show result">
+    </form>
+    <!---
+    after submit is hit we will want to show a new elements containing the results
+    -->
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+hhtml, body {
+    background: #d9d8d8;
+}
+.rounded-rectangle {
+  position: absolute;
+  top: -10px;
+  left: 40px;
+  width: 445px;
+  height: 110px;
+  background-color: red;
+  border-radius: 10px;
+}
+.rounded-rectangle2{
+  position: absolute;
+  top: 120px;
+  left: 40px;
+  width: 970px;
+  height: 95px;
+  background-color: black;
+  border-radius: 10px;
+}
+h1 {
+  color: white;
+  position: relative;
+  top: -5px;
+  left: 40px;
+  font-family: Montserrat, sans-serif;
+  font-size: 50px;
+}
+img {
+  position: relative;
+  left: 450px;
+  top: -107px;
+  width: 130px;
+  
+}
+div1 {
+  color: white;
+  font-family: Montserrat, sans-serif;
+  position: relative;
+  display: inline-block;
+  width: 930px;
+  top: -88px;
+  left: 70px;
+  font-size: 20px
+}
+
+div2 {
+  color: black;
+  position: relative;
+  top: -49px;
+  left: 70px;
+}
+
+div3 {
+  color: black;
+  position: relative;
+  top: -30px;
+  left: 70px;
+}
+
+ul {
+  color: black;
+  font-family: Montserrat, sans-serif;
+  position: relative;
+  left: 70px;
+  top: -40px;
+  font-size: 17x;
+}
+
+div4 {
+  position:relative;
+  top: 5px;
+}
