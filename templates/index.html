@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grocery List</title>
+</head>
+<body>
+    <h1>Keywords:</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="pdf">
+    </form>
+    
+    <form method="POST">
+        <input type="text" name="item" placeholder="Enter an item">
+        <input type="submit" value="Add">
+    </form>
+    <ul>
+        {% for item in grocery_list %}
+        <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+    <form method="POST" enctype="submit button">
+        <input type="submit" value="Add">
+    </form>
+    <!---
+    after submit is hit we will want to show a new elements containing the results
+    -->
+    <div>{% result %}</div>>
+</body>
+</html>

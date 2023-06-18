@@ -12,7 +12,6 @@ logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 
 from llama_index import GPTVectorStoreIndex, download_loader
-from IPython.display import Markdown, display
 
 
 PDFReader = download_loader("PDFReader")
