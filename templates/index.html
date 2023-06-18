@@ -7,42 +7,42 @@
     <h1>Keywords:</h1>
     <form method="POST">
         <input type="text" name="item" placeholder="Enter an item">
-        <input type="submit" value="Add" name="submit_item">
+        <input type="submit" action="/" value="Add" name="submit_item">
     </form>
     <ul>
         {% for item in queries %}
-        <li>{{ item }}</li>
+        <li>
+            {{ item }}
+            <form action="/remove" method="POST" style="display:inline;">
+                <input type="hidden" name="item" value="{{ item }}">
+                <button type="submit">Remove</button>
+            </form>
+        </li>
         {% endfor %}
     </ul>
     <form method="POST">
         <input type="file" name="pdf" id="pdf-input" accept=".pdf" placeholder="Enter an item">
     </form>
     <script>
-        var fileInput = document.getElementById('pdf-input');
-        var fileLabel = document.getElementById('pdf-label');
-
-        fileInput.addEventListener('change', function() {
-            if (fileInput.files.length > 0) {
-                fileLabel.textContent = fileInput.files[0].name;
-            } else {
-                fileLabel.textContent = 'No file chosen';
-            }
-
-            var form = document.querySelector('form');
-            var formData = new FormData(form);
-            fetch('/', {
-                method: 'POST',
-                body: formData
-            }).then(function(response) {
-                if (response.ok) {
-                    console.log('PDF file uploaded successfully!');
-                } else {
-                    console.error('Error uploading PDF file.');
-                }
-            }).catch(function(error) {
-                console.error('Error uploading PDF file:', error);
+            window.onload = function() {
+            var fileInput = document.getElementById('pdf-input');
+            fileInput.addEventListener('change', function() {
+                var form = new FormData();
+                form.append('pdf', fileInput.files[0]);
+                fetch('/', {
+                    method: 'POST',
+                    body: form
+                }).then(function(response) {
+                    if (response.ok) {
+                        console.log('PDF file uploaded successfully!');
+                    } else {
+                        console.error('Error uploading PDF file.');
+                    }
+                }).catch(function(error) {
+                    console.error('Error uploading PDF file:', error);
+                });
             });
-        });
+        };
     </script>
     <!-- ideally more space here-->
     <form action="/submit", method="get">

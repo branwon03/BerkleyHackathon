@@ -1,27 +1,28 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 from werkzeug.utils import secure_filename
+from llama_index import SimpleDirectoryReader, GPTVectorStoreIndex, download_loader
 import os
-os.environ['OPENAI_API_KEY'] = "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"
-
+os.environ['OPENAI_API_KEY'] = "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"
 import logging
 import sys
-import requests
 from pathlib import Path
+import openai
 
 
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
-
-
-from llama_index import GPTVectorStoreIndex, download_loader
 
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = './uploads'
+folder_path = './uploads'
+
+openai.api_key = "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"
 
 queries = []
 
 result= ""
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -32,45 +33,66 @@ def index():
             queries.append(item)
         elif 'pdf' in request.files:
             print("here")
-            # pdf goes away when rendered again
+            
+            # empties the folder
+            for filename in os.listdir(folder_path):
+                file_path = os.path.join(folder_path, filename)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+            
             pdf_file = request.files['pdf']
             if pdf_file.filename != '':
                 print("here2")
                 filename = secure_filename(pdf_file.filename)
                 pdf_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        elif 'remove' in request.form:
+            item = request.li.get('item')
+            print(item)
+            queries.remove(item)
+
     
     
     return render_template('index.html', queries=queries)
 
+@app.route("/remove", methods=['POST'])
+def remove() :
+    item = request.form.get('item')
+    if item in queries:
+        queries.remove(item)
+    return redirect('/')
+
+
 @app.route("/submit", methods=['GET'])
 def submit() :
-    result = "here"
-    return "here"
+        files = os.listdir(folder_path)
+        if len(files) == 1:  # Check if there is only one file in the folder
+            file_path = os.path.join(folder_path, files[0])
+        else:
+            print("There is not exactly one file in the folder.")
+
+        PDFReader = download_loader("PDFReader")
+
+        loader = PDFReader()
+        documents = loader.load_data(file=Path(file_path))
+        print(documents[0].get_text()) # prints the right thing
+
+        index = GPTVectorStoreIndex.from_documents(documents)
+
+        # here we need to change the string based on the queries entered
+        # site should error if no queries
+        query = "Find the"
+
+        if len(queries) == 1 :
+            query = query + queries[0]
+        else :
+            for i in range(len(queries)):
+                if (i == len(queries) - 1) :
+                    query = query + " and"
+                query = query + " " + queries[i]
+        query = query + " in the text. Format the answer with the [keyword]:, followed by the results and a new line"
+        response = index.as_query_engine().query(query)
+        result = response
+        return render_template('result.html', result=result)
 
 if __name__ == '__main__':
     app.run()
-
-
-    # PDFReader = download_loader("PDFReader")
-    # loader = PDFReader()
-    # documents = loader.load_data(file=Path('./uploads/reference.pdf')) 
-    # print("get here")
-
-    # index = GPTVectorStoreIndex.from_documents(documents)
-    # query_engine = index.as_query_engine()
-    # print("get here2")
-
-    # # here we need to change the string based on the queries entered
-    # # site should error if no queries
-    # query = "What is the"
-
-    # for i in range(len(queries)):
-    #     if (i == len(queries) - 1) :
-    #         query = query + " and"
-    #     query = query + " " + queries[i]
-    # query = query + " in the text"
-    # print("get here3") 
-    # response = query_engine.query(query)
-    # result = response
-    # print("get here4")
-    # return render_template('result.html', result=result)
