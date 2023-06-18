@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, redirect
 from werkzeug.utils import secure_filename
 from llama_index import SimpleDirectoryReader, GPTVectorStoreIndex, download_loader
 import os
-os.environ['OPENAI_API_KEY'] = "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"
+os.environ['OPENAI_API_KEY'] = 'OPENAI_API_KEY'
 import logging
 import sys
 from pathlib import Path
@@ -16,7 +16,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './uploads'
 folder_path = './uploads'
 
-openai.api_key = "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"
+openai.api_key = 'OPENAI_API_KEY'
 
 queries = []
 
