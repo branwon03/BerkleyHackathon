@@ -11,15 +11,15 @@
     
     <form method="POST">
         <input type="text" name="item" placeholder="Enter an item">
-        <input type="submit" value="Add">
+        <input type="submit" value="Add" name="submit_item">
     </form>
     <ul>
-        {% for item in grocery_list %}
+        {% for item in queries %}
         <li>{{ item }}</li>
         {% endfor %}
     </ul>
-    <form method="POST" enctype="submit button">
-        <input type="submit" value="Add">
+    <form method="POST" enctype="submit-button">
+        <input type="submit" value="Add", name="submit_all">
     </form>
     <!---
     after submit is hit we will want to show a new elements containing the results
