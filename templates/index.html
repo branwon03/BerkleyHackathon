@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Grocery List</title>
+    <title>PDF Interpreter</title>
 </head>
 <body>
     <h1>Keywords:</h1>
-    <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="pdf">
-    </form>
-    
     <form method="POST">
         <input type="text" name="item" placeholder="Enter an item">
         <input type="submit" value="Add" name="submit_item">
@@ -18,12 +14,42 @@
         <li>{{ item }}</li>
         {% endfor %}
     </ul>
-    <form method="POST" enctype="submit-button">
-        <input type="submit" value="Add", name="submit_all">
+    <form method="POST">
+        <input type="file" name="pdf" id="pdf-input" accept=".pdf" placeholder="Enter an item">
+    </form>
+    <script>
+        var fileInput = document.getElementById('pdf-input');
+        var fileLabel = document.getElementById('pdf-label');
+
+        fileInput.addEventListener('change', function() {
+            if (fileInput.files.length > 0) {
+                fileLabel.textContent = fileInput.files[0].name;
+            } else {
+                fileLabel.textContent = 'No file chosen';
+            }
+
+            var form = document.querySelector('form');
+            var formData = new FormData(form);
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            }).then(function(response) {
+                if (response.ok) {
+                    console.log('PDF file uploaded successfully!');
+                } else {
+                    console.error('Error uploading PDF file.');
+                }
+            }).catch(function(error) {
+                console.error('Error uploading PDF file:', error);
+            });
+        });
+    </script>
+    <!-- ideally more space here-->
+    <form action="/submit", method="get">
+        <input type="submit" vlaue="show result">
     </form>
     <!---
     after submit is hit we will want to show a new elements containing the results
     -->
-    <div>{% result %}</div>>
 </body>
 </html>

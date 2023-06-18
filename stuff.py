@@ -16,7 +16,7 @@ from llama_index import GPTVectorStoreIndex, download_loader
 
 PDFReader = download_loader("PDFReader")
 loader = PDFReader()
-documents = loader.load_data(file=Path('./article.pdf')) # this needs to be saved to a common name and
+documents = loader.load_data(file=Path('./reference.pdf')) # this needs to be saved to a common name and
 # into a directory we can access
 
 index = GPTVectorStoreIndex.from_documents(documents)
