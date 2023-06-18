@@ -1,13 +1,93 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
     <title>PDF Interpreter</title>
 </head>
+<style>
+    ul {
+        display: flex; /* Use flexbox */
+        flex-wrap: wrap; /* Wrap list items to next line */
+        justify-content: center;
+    }
+    li {
+        margin-bottom: 5px;
+        background-color: black;
+        color: white;
+        border-radius: 10px;
+        padding: 10px;
+        list-style-type: none;
+        width: fit-content; 
+        margin: 0 10px 5px 0;
+        font-size: 25px;
+    }
+
+    .X_button {
+        background-color: transparent;
+        color: white;
+        border: none;
+        opacity: .5;
+        font-size: 25px;
+    }
+    
+    .norm_button {
+        background-color: black;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        width: fit-content;
+        font-size: 30px;
+        height: 40px;
+        padding: 20px, 40px;
+    }
+
+    .pdf_thing {
+        margin: 20px;
+    }
+
+    .text_input{
+        margin: 10px;
+        width: 200px;
+        height: 30px;
+        font-size: 25px;
+    }
+
+    .title{
+        font-size: 50px;
+        font-family:'Poppins', sans-serif ;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        font-family:'Poppins', sans-serif ;
+    }
+
+    .container {
+        width: 80%;
+        text-align: center; 
+    }
+
+    .intro {
+        font-size: 50px;
+    }
+
+</style>
 <body>
-    <h1>Keywords:</h1>
+    <div class="container">
+        <h1 class="intro"> PDF Interpreter:</h1>
+        <p> Use this page to quickly search through a pdf for keywords of your choosing.<br> 
+            For Example you can submit autobiography and add the key word "author's birthday"
+            and the page will provide the information. <br>
+            DO NOT structure the keyword as a question, just the genral topic you are looking for.</p>
+    <h1 class="title">Keywords:</h1>
     <form method="POST">
-        <input type="text" name="item" placeholder="Enter an item">
-        <input type="submit" action="/" value="Add" name="submit_item">
+        <input type="text" class="text_input" name="item" placeholder="Enter an item">
+        <input type="submit" class="norm_button" action="/" value="Add" name="submit_item">
     </form>
     <ul>
         {% for item in queries %}
@@ -15,12 +95,12 @@
             {{ item }}
             <form action="/remove" method="POST" style="display:inline;">
                 <input type="hidden" name="item" value="{{ item }}">
-                <button type="submit">Remove</button>
+                <button class="X_button" type="submit">X</button>
             </form>
         </li>
         {% endfor %}
     </ul>
-    <form method="POST">
+    <form method="POST" class="pdf_thing">
         <input type="file" name="pdf" id="pdf-input" accept=".pdf" placeholder="Enter an item">
     </form>
     <script>
@@ -46,10 +126,11 @@
     </script>
     <!-- ideally more space here-->
     <form action="/submit", method="get">
-        <input type="submit" vlaue="show result">
+        <input type="submit"  class="norm_button" vlaue="show result">
     </form>
     <!---
     after submit is hit we will want to show a new elements containing the results
     -->
+    </div>
 </body>
 </html>

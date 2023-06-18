@@ -2,10 +2,12 @@ from flask import Flask, request, render_template, redirect
 from werkzeug.utils import secure_filename
 from llama_index import SimpleDirectoryReader, GPTVectorStoreIndex, download_loader
 import os
+os.environ['OPENAI_API_KEY'] = "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"
 import logging
 import sys
 from pathlib import Path
 import openai
+from markupsafe import Markup
 
 
 
@@ -14,7 +16,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './uploads'
 folder_path = './uploads'
 
-openai.api_key = "OPEN_AI_KEY"
+openai.api_key = "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"
 
 queries = []
 
@@ -87,11 +89,13 @@ def submit() :
             for i in range(len(queries)):
                 if (i == len(queries) - 1) :
                     query = query + " and"
-                query = query + " " + queries[i]
+                query = query + " " + queries[i] + ","
         query = query + " in the text. Format the answer with the [keyword]:, followed by the results and a new line"
+        print(query)
         response = index.as_query_engine().query(query)
-        result = response
-        return render_template('result.html', result=result)
+        result = str(response) # convert to a string
+        result = result.replace('\n', '<br>')
+        return render_template('result.html', result=Markup(result))
 
 if __name__ == '__main__':
     app.run()
